@@ -1,4 +1,13 @@
+import type { Equal, Expect } from '@type-challenges/utils'
+
 type MyPick<T, K extends keyof T> = { [P in K]: T[P] }
+
+type cases = [
+  Expect<Equal<Expected1, MyPick<Todo, 'title'>>>,
+  Expect<Equal<Expected2, MyPick<Todo, 'title' | 'completed'>>>,
+  // @ts-expect-error
+  MyPick<Todo, 'title' | 'completed' | 'invalid'>
+]
 
 interface Todo {
   title: string
@@ -6,9 +15,11 @@ interface Todo {
   completed: boolean
 }
 
-type TodoPreview = MyPick<Todo, 'title' | 'completed'>
+interface Expected1 {
+  title: string
+}
 
-const todo: TodoPreview = {
-  title: 'Clean room',
-  completed: false
+interface Expected2 {
+  title: string
+  completed: boolean
 }
